@@ -21,7 +21,7 @@ with open(filename, 'r') as f:
             x = symbol.span()[0]
             symbols.append((x,y,symbol.group()[0]))
 
-# Parse for numbers, check adjacent cells        
+# Parse for numbers, store in list if adjacent to a *
 numbers = []
 with open(filename, 'r') as f:
     for y, line in enumerate(f.readlines()):
@@ -39,9 +39,9 @@ for symbol in symbols:
     for number in numbers:
         positions = [(number[0][0]+i,number[0][1]) for i in range(len(number[1]))]
         if check_number(positions, [symbol]) == 1:
-            gear_numbers.append(number)
+            gear_numbers.append(int(number[1]))
     if len(gear_numbers) == 2:
-        gear_ratios.append(math.prod([int(i[1]) for i in gear_numbers]))
+        gear_ratios.append(math.prod(gear_numbers))
     ...
 
 
