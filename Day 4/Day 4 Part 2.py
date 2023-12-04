@@ -20,11 +20,10 @@ with open(filename, 'r') as f:
 
 # Generate number of copies of cards
 for card_number, score in card_scores.items():
-    for i in range(card_copies[card_number]):
-        for i in range(score):
-            target_card = card_number+i+1
-            if target_card in card_copies:
-                card_copies[target_card] += 1 
+    for i in range(score):
+        target_card = card_number+i+1
+        if target_card in card_copies:
+            card_copies[target_card] += 1 * card_copies[card_number]
 
 print(f'Sum: {sum(card_copies.values())}')
 ...
