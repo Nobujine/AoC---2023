@@ -7,19 +7,17 @@ with open(filename, 'r') as f:
 # process seed line
 seeds = [int(x) for x in sections.pop(0)[0].split()[1:]]
 
-# Part 2 
 # store seeds as ranges, operate on those ranges
 seed_ranges = []
 for i in range(0,len(seeds),2):
     seed_ranges.append([seeds[i], seeds[i]+seeds[i+1]])
-...
 
 # process almanac sections
 sections = [x[1:] for x in sections]  # remove header, they are sequentially listed
 sections = [[[int(z) for z in y.split()] for y in x] for x in sections]  # Convert everything to list of numbers
 
 def convert_two_ranges(input_range, map_range) -> list:
-    # Return list of new ranges
+    # Return [[mapped], [not mapped]], can have multiple lists in each but only one mapped possible
     # wholly covered
     offset = map_range[0] - map_range[1]
     map_range = [map_range[1], map_range[1]+map_range[2]]
@@ -49,9 +47,6 @@ def convert_two_ranges(input_range, map_range) -> list:
     return [[],[input_range]] # [], [[0,10]]
 
 # convert from seed through all the sections
-mapped, not_mapped = convert_two_ranges([57,70], [49,53,8])
-...
-
 for section in sections:
     mapped_ranges = []
     for map_range in section: 
