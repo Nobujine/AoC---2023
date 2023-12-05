@@ -1,4 +1,4 @@
-filename = 'Day 5/input.txt'
+filename = 'Day 5/test_input.txt'
 
 with open(filename, 'r') as f:
     almanac = f.read()
@@ -11,51 +11,56 @@ seeds = [int(x) for x in sections.pop(0)[0].split()[1:]]
 # store seeds as ranges, operate on those ranges
 seed_ranges = []
 for i in range(0,len(seeds),2):
-    seed_ranges.append({'start':seeds[i], 'stop':seeds[i]+seeds[i+1]})
+    seed_ranges.append([seeds[i], seeds[i]+seeds[i+1]])
 ...
 
 # process almanac sections
 sections = [x[1:] for x in sections]  # remove header, they are sequentially listed
 sections = [[[int(z) for z in y.split()] for y in x] for x in sections]  # Convert everything to list of numbers
 
-def convert_number(number:int, section:list) -> int:
-    # Destination Source Range_Length
-    for map_range in section:
-        if map_range[1] <= number <= map_range[1]+map_range[2]:
-            return number + map_range[0] - map_range[1]
-    return number
-
-def convert_map_range(map_range:list, numbers:list) -> list:
-    # Destination Source Range_Length
+def convert_two_ranges(input_range, map_range) -> list:
+    # Return list of new ranges
+    # wholly covered
     offset = map_range[0] - map_range[1]
-    mapping_set = set(map_range[1]+j for j in range(map_range[2]))
-    new_numbers = []
-    unchanged = []
-    for number in numbers:
-        if number in mapping_set:
-            new_numbers.append(number+offset)
-        else:
-            unchanged.append(number)
-    return new_numbers, unchanged
-    ...
-
-def convert_seed_ranges(seed_ranges:list, map_range:list) -> list:
-    # for 
-    ...
+    map_range = [map_range[1], map_range[1]+map_range[2]]
+    # Total overlap
+    if input_range[0] >= map_range[0] and input_range[1] <= map_range[1]:
+        return [[x+offset for x in input_range]]
+    # 3 <= 4 <= 5
+    high_intersection = input_range[0] <= map_range[0] <= input_range[1] 
+    low_intersection =  input_range[0] <= map_range[1] <= input_range[1]
+    # Map inside [0,10], [1,1,5]
+    if high_intersection and low_intersection:
+        split_range_A = [input_range[0],      map_range[0]-1]
+        mapped_range =  [map_range[0]+offset, map_range[1]+offset]
+        split_range_B = [map_range[1]+1,        input_range[1]]
+        return [split_range_A, mapped_range, split_range_B] # [0,0], [1,6], [7,10]
+    # low end intersection [10,20], [0,0,15]
+    if low_intersection:
+        mapped_range = [input_range[0]+offset, map_range[1]+offset-1]
+        split_range =  [map_range[1], input_range[1]]
+        return  [mapped_range, split_range] # [10+,14+], [15,20]
+    # high end intersection [0,10], [5,5,10]
+    if high_intersection:
+        split_range = [input_range[0],       map_range[0]-1]
+        mapped_range = [map_range[0]+offset, input_range[1]+offset]
+        return [split_range, mapped_range] # [0,4] , [5,10]
+    # no intersection [0,10], [20,20,20]
+    return [input_range] # [0,10]
 
 # convert from seed through all the sections
-new_seeds = []
+test = convert_two_ranges([0,10], [1,1,5])
+...
+seed_ranges = [[82,82]]
 for section in sections:
-    all_changed_seeds = set()
-    for map_range in section:
-        new_seeds, seeds = convert_map_range(map_range, seeds)
-        all_changed_seeds = all_changed_seeds | set(seed for seed in new_seeds if seed not in all_changed_seeds)
-        ...
-    seeds += all_changed_seeds
+    converted_ranges = []
+    for i, seed_range in enumerate(seed_ranges.copy()):
+        for map_range in section: 
+            new_ranges = convert_two_ranges(seed_range, map_range)
+            converted_ranges += new_ranges
+    seed_ranges = converted_ranges
     ...
-# for section in sections:
-#     seeds = [convert_number(seed, section) for seed in seeds]
+low_end = [seed_range[0] for seed_range in seed_ranges]
 
-print(f'Minimum Location: {min(seeds)}')
-
+print(f'Min: {min(low_end)}')
 ...
