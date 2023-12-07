@@ -26,9 +26,8 @@ def determine_score(cards:str) -> int:
         case _:
             raise ValueError(f'We should not be here! {len(unique)=}')
 
-    BASE_TEN_BUFFER = 10  # to ensure that when we concat to a string all numbers take up 2 digits minimum
-    card_scores = [str(card_strength.index(c)+BASE_TEN_BUFFER) for c in cards]
-    card_scores.insert(0, str(score+BASE_TEN_BUFFER))  # insert the hand score at the very front
+    card_scores = [str(card_strength.index(c)).zfill(2) for c in cards]
+    card_scores.insert(0, str(score))  # insert the hand score at the very front
     card_scores = int(''.join(card_scores))
 
     return card_scores
