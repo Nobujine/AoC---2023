@@ -16,9 +16,9 @@ def determine_score(cards:str) -> int:
         case 1 | 0:
             score = 7 # Five of a kind or all Joker
         case 2:
-            score = 6 if count == 4 else 5
+            score = 6 if count == 4 else 5 # Four of a kind or Full house
         case 3:
-            score = 4 if count == 3 else 3
+            score = 4 if count == 3 else 3 # Three of a kind or Two pair
         case 4:
             score = 2 # One pair
         case 5:
