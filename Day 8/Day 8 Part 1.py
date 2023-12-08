@@ -1,4 +1,4 @@
-filename = 'Day 8/test_input.txt'
+filename = 'Day 8/input.txt'
 
 with open(filename, 'r') as f:
     instructions = f.readline().split('\n')[0]
