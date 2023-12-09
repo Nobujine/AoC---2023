@@ -17,8 +17,7 @@ def extrapolate(numbers:list) -> int:
         new_number = extrapolate(d)
         return new_number + numbers[-1]
     
-history = [list(reversed(h)) for h in history]
-
+history = [list(reversed(h)) for h in history]  # lol come on 2ez4me
 next_digits = [extrapolate(line) for line in history]
 
 print(f'Sum of next digits: {sum(next_digits)}')
