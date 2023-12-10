@@ -36,18 +36,12 @@ with open(filename, 'r') as f:
 g = nx.Graph()
 for n in grid.keys():
     g.add_node(n)
-    
 
 for start, connections in grid.items():
     for end in connections:
         if end in grid:
             g.add_edge(start, end)
 
-node = g.nodes[start_position]
-
 # Start at (15, 54)
-cycle = nx.find_cycle(g, source=start_position)
 
-print(f'Cycle Length: {len(cycle)}')
-print(f'Answer: {int(len(cycle)/2)}')
 ...
