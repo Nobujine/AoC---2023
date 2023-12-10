@@ -33,15 +33,25 @@ with open(filename, 'r') as f:
                 if tile == 'S':
                     start_position = pos
 
-g = nx.Graph()
-for n in grid.keys():
-    g.add_node(n)
+# add starting connections
+for node, connections in grid.items():
+    if start_position in connections:
+        grid[start_position].append(node)
 
-for start, connections in grid.items():
-    for end in connections:
-        if end in grid:
-            g.add_edge(start, end)
+def find_cycle(graph, start) -> set:
+    open_list = [start]
+    closed_list = set()
+    while open_list:
+        node = open_list.pop()
+        connections = graph[node]
+        for connection in connections:
+            if connection not in closed_list:
+                open_list.append(connection) 
+        closed_list.add(node)
+    return closed_list
 
-# Start at (15, 54)
+cycle = find_cycle(grid, start_position)
+
+print(f'Answer: {len(cycle)//2}')
 
 ...
