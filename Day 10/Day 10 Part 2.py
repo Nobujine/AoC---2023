@@ -90,7 +90,6 @@ def inside(pipe:dict, point:tuple) -> bool:
         print(f'Tile: {current_tile} inside: {bool(count % 2)}')
     
     return bool(count % 2)
-    ...
 
 test = inside(pipe, (5,4))
 
