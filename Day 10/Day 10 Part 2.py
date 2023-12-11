@@ -20,7 +20,7 @@ connections = {
 def add_tuples(A:tuple, B:tuple) -> tuple:
     return (A[0]+B[0], A[1]+B[1])
 
-filename = 'Day 10/test_input.txt'
+filename = 'Day 10/part2_test.txt'
 
 grid = {}
 start_position = None
@@ -79,18 +79,27 @@ def inside(pipe:dict, point:tuple) -> bool:
     # traverse along X axis and count transitions
     y = point[1]
     count = 0
-    for x in range((point[0]-1)):
+    for x in range((point[0]+1)):
         current_tile = (x, y)
-        next_tile = (x+1, y)
-        transition_in = current_tile in pipe and next_tile not in pipe
-        transition_out = current_tile not in pipe and next_tile in pipe
-
-        if transition_in or transition_out:
+        last_tile = (x-1, y)
+        
+        transition_out = current_tile not in pipe and last_tile in pipe
+        if transition_out and current_tile not in pipe:
             count += 1
+
+        print(f'Tile: {current_tile} inside: {bool(count % 2)}')
     
-    return count
+    return bool(count % 2)
     ...
 
-test = inside(pipe, open_tiles[0])
-print(f'{test=}')
+test = inside(pipe, (5,4))
+
+count = 0
+open_tiles = [[tile, inside(pipe, tile)] for tile in open_tiles]
+for point in open_tiles:
+    if point[1]:
+        count += 1
+
+print(f'interior points: {count}')
 ...
+
