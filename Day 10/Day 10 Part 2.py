@@ -20,22 +20,25 @@ connections = {
 def add_tuples(A:tuple, B:tuple) -> tuple:
     return (A[0]+B[0], A[1]+B[1])
 
-filename = 'Day 10/part2_test.txt'
+#filename = 'Day 10/part2_test.txt'
+filename = 'Day 10/input.txt'
 
 grid = {}
 start_position = None
-open_tiles = []
+vertical_bars = []
 with open(filename, 'r') as f:
     for y, line in enumerate(f.read().splitlines()):
         for x, tile in enumerate(line):
             pos = (x,y)
+            if tile == '|' or tile == 'J' or tile == 'L' or tile == 'S':
+                vertical_bars.append(pos)
             if tile == '.':
-                open_tiles.append((x,y))
+                ...
             else:
                 grid[pos] = [add_tuples(pos, con) for con in connections[tile]]
                 if tile == 'S':
                     start_position = pos
-gridsize = max(x,y)
+gridsize = (x,y)
 
 # add starting connections
 for node, connections in grid.items():
@@ -54,51 +57,36 @@ def find_cycle(graph, start) -> set:
         closed_list.add(node)
     return closed_list
 
-def find_path(graph, start, end) -> bool:
-    open_list = [start]
-    closed_list = set()
-    while open_list:
-        node = open_list.pop()
-        connections = graph[node] if node in graph else []
-        if end in connections:
-            return True
-        for connection in connections:
-            if connection not in closed_list:
-                open_list.append(connection) 
-        closed_list.add(node)
-    return False
-
 pipe = find_cycle(grid, start_position)
 
-NORTH = (0,-1)
-SOUTH = (0,1)
-EAST = (1,0)
-WEST = (-1,0)
-
-def inside(pipe:dict, point:tuple) -> bool:
-    # traverse along X axis and count transitions
+def inside(point:tuple, bars:set) -> bool:
     y = point[1]
     count = 0
-    for x in range((point[0]+1)):
-        current_tile = (x, y)
-        last_tile = (x-1, y)
-        
-        transition_out = current_tile not in pipe and last_tile in pipe
-        if transition_out and current_tile not in pipe:
+    for x in range(point[0]):
+        check_point = (x,y)
+        if check_point in vertical_bars:
             count += 1
-
-        print(f'Tile: {current_tile} inside: {bool(count % 2)}')
-    
+        #print(f'Tile: {check_point} inside: {bool(count % 2)}')
     return bool(count % 2)
 
-test = inside(pipe, (5,4))
+# generate a list of all tiles that aren't the pipe itself
+open_tiles = []
+for y in range(gridsize[1]):
+    for x in range(gridsize[0]):
+        tile = (x,y)
+        if tile not in pipe:
+            open_tiles.append(tile)
+
+vertical_bars = set(bar for bar in vertical_bars if bar in pipe)
+open_tiles = [[tile, inside(tile, vertical_bars)] for tile in open_tiles]
 
 count = 0
-open_tiles = [[tile, inside(pipe, tile)] for tile in open_tiles]
 for point in open_tiles:
     if point[1]:
         count += 1
 
 print(f'interior points: {count}')
+# not 458
+# 449 per reddit
+# I fucking forgot the S counts as a pipe, that fixed it. jesus
 ...
-
