@@ -1,5 +1,3 @@
-import networkx as nx
-
 # (x,y)
 NORTH = (0,-1)
 SOUTH = (0,1)
@@ -20,9 +18,9 @@ connections = {
 def add_tuples(A:tuple, B:tuple) -> tuple:
     return (A[0]+B[0], A[1]+B[1])
 
-#filename = 'Day 10/part2_test.txt'
 filename = 'Day 10/input.txt'
 
+# extract file information
 grid = {}
 start_position = None
 vertical_bars = []
