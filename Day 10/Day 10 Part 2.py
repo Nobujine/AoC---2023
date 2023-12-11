@@ -20,7 +20,7 @@ connections = {
 def add_tuples(A:tuple, B:tuple) -> tuple:
     return (A[0]+B[0], A[1]+B[1])
 
-filename = 'Day 10/part2_test.txt'
+filename = 'Day 10/test_input.txt'
 
 grid = {}
 start_position = None
@@ -75,24 +75,22 @@ SOUTH = (0,1)
 EAST = (1,0)
 WEST = (-1,0)
 
-new_grid = {}
-for y in range(0, (gridsize*2)+5):
-    for x in range(0, (gridsize*2)+5):
-        connections = [add_tuples((x,y), d) for d in [NORTH, SOUTH, EAST, WEST]]
-        connections = [c for c in connections if (c[0] >= 0 and c[1] >= 0)]
-        new_grid[(x,y)] = connections
+def inside(pipe:dict, point:tuple) -> bool:
+    # traverse along X axis and count transitions
+    y = point[1]
+    count = 0
+    for x in range((point[0]-1)):
+        current_tile = (x, y)
+        next_tile = (x+1, y)
+        transition_in = current_tile in pipe and next_tile not in pipe
+        transition_out = current_tile not in pipe and next_tile in pipe
 
-for tile in grid:
-    tile = tuple(x*2 for x in tile)
-    new_grid[tile] = []
+        if transition_in or transition_out:
+            count += 1
+    
+    return count
+    ...
 
-count = 0
-enclosed_tiles = []
-for tile in open_tiles:
-    tile = tuple(x*2 for x in tile)
-    if not find_path(new_grid, tile, (0,0)):
-        enclosed_tiles.append(tile)
-
-
-
+test = inside(pipe, open_tiles[0])
+print(f'{test=}')
 ...
