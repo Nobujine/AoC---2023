@@ -23,13 +23,13 @@ for xy in [0,1]:
                 expanded_galaxies[galaxy_number][xy] += 1
 galaxies = expanded_galaxies
 
-def L_distance(A:tuple, B:tuple) -> int:
+def manhattan_distance(A:tuple, B:tuple) -> int:
     return sum([abs(B[i]-A[i]) for i in range(len(A))])
 
 distances = []
 for galaxy_number, galaxy_A in enumerate(galaxies):
     for galaxy_B in galaxies[galaxy_number+1:]:
-        distance = L_distance(galaxy_A, galaxy_B)
+        distance = manhattan_distance(galaxy_A, galaxy_B)
         distances.append(distance)
         # print(f'Pair: {galaxy_A}, {galaxy_B}, dist: {L_distance(galaxy_A, galaxy_B)}')
         
