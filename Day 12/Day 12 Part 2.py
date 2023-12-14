@@ -64,7 +64,6 @@ output = []
 for line in data:
     output.append([line[0], naive_solve_line(*line)])
 
-
 print(f'Answer: {sum([x[1] for x in output])}')
 
 ...
