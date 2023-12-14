@@ -61,8 +61,9 @@ def evaluate_line(line:str, values:list) -> bool:
     return True
 
 output = []
-for line in data:
+for i, line in enumerate(data):
     output.append([line[0], naive_solve_line(*line)])
+    print(f'Row {i} Possibilities: {output[i][1]}')
 
 print(f'Answer: {sum([x[1] for x in output])}')
 
