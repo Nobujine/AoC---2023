@@ -37,7 +37,7 @@ def find_reflection(grid:list) -> int:
 def rotate_grid(grid:list) -> list:
     output = []
     for y in range(len(grid[0])):
-        output.append(''.join([l[y] for l in grid]))
+        output.append(''.join([line[y] for line in grid]))
     return output
 
 
