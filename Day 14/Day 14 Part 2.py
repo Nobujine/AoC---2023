@@ -42,7 +42,7 @@ def split_right(blocks:list, rocks:list, xy:int) -> list:
         ...
     return new_rocks
         
-def roll_rocks(blocks:list, rocks:set, direction:tuple) -> set:
+def roll_rocks(blocks:list, rocks:list, direction:tuple) -> set:
     # returns new list of round rocks
     xy = direction[0]
 
@@ -64,13 +64,13 @@ def roll_rocks(blocks:list, rocks:set, direction:tuple) -> set:
             new_rock[xy] = i
             new_rock[xy-1] = new_value
             new_rock = tuple(new_rock)
-            rocks.add(new_rock)
+            rocks.append(new_rock)
     
     return rocks
 
 def main():
     blocks = []
-    round_rocks = set()
+    round_rocks = []
     with open(filename, 'r') as f:
         
         for y, line in enumerate(f.read().splitlines()):
@@ -80,7 +80,7 @@ def main():
                     case '#': 
                         blocks.append(pos)
                     case 'O':
-                        round_rocks.add(pos)
+                        round_rocks.append(pos)
                     case _:
                         pass
         # create blocks around the outside to stop rolling
@@ -104,7 +104,7 @@ def main():
     for cycle in range(CYCLES):
         for direction in SPIN_CYCLE:
             round_rocks = roll_rocks(blocks, round_rocks, direction)
-        if cycle > 10:
+        if cycle > 995:
             #print(f'Progress: {cycle:,} / {CYCLES:,}')
             score = sum([row_count - rock[1] for rock in round_rocks])
             print(f'Answer: {score} cycle:{cycle}')
