@@ -1,9 +1,21 @@
-filename = 'Day 15/test_input.txt'
+filename = 'Day 15/input.txt'
 
 
-def decode_hash(input:str) -> int:
-    ...
-    test = ord('H')
-    ...
+def decode_hash(input_string:str) -> int:
+    output = 0
+    for char in input_string:
+        output += ord(char)
+        output *= 17
+        output = output % 256
+        ...
+    return output
 
-print(decode_hash('HASH'))
+
+with open(filename, 'r') as f:
+    data = f.read().split(',')
+
+scores = [decode_hash(entry) for entry in data]
+
+print(f'Answer: {sum((scores))}')
+
+...
