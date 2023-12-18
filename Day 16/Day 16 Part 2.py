@@ -90,11 +90,11 @@ def solve_position(mirrors, grid_size, start_pos, start_direction) -> int:
     return len(energized_tiles)
 
 max_tiles = 0
-for y in range(grid_size[1]):
+for y in range(grid_size[1]): # sides
     max_tiles = max(max_tiles, solve_position(mirrors, grid_size, (-1,y), RIGHT))
     max_tiles = max(max_tiles, solve_position(mirrors, grid_size, (grid_size[0]+1,y), LEFT))
 
-for x in range(grid_size[0]):
+for x in range(grid_size[0]): # top and bottom
     max_tiles = max(max_tiles, solve_position(mirrors, grid_size, (x,-1), DOWN))
     max_tiles = max(max_tiles, solve_position(mirrors, grid_size, (x,grid_size[1]+1), UP))
 
