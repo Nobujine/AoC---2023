@@ -68,7 +68,8 @@ def check_straight_line(path:list)->bool:
     ...
 
 def score(node:Node, end:tuple) -> int:
-    return node.value + max(end[0]-node.pos[0], end[1]-node.pos[1])
+    dist = max(end[0]-node.pos[0], end[1]-node.pos[1])
+    return dist + node.value
 
 def pathfind(grid:Grid, start:Node, end:tuple) -> list:
     # returns a list of node objects
@@ -87,8 +88,9 @@ def pathfind(grid:Grid, start:Node, end:tuple) -> list:
             if grid.inside_grid(pos):
                 value = grid.tiles[pos] + path[-1].value
                 new_path = path.copy()
-                new_path.append(Node(pos, value))
-                if new_path not in closed_list:
+                node = Node(pos, value)
+                new_path.append(node)
+                if node not in closed_list:
                     open_list.append(new_path)
         ...
 
@@ -102,10 +104,18 @@ def main():
                 grid.tiles[pos] = int(value)
     grid.size = (x,y)
 
+    test_path = [[Node((1,1),10)], [Node((1,1),1)]]
+    ...
+    test_path.sort(key=lambda x:score(x[-1], grid.size))
+    ...
+
+
     start_pos = (0,0)
     start = Node(start_pos, grid.tiles[start_pos])
     end = grid.size  # bottom right corner, per Da Rules
     path = pathfind(grid, start, end)
+
+    print(f'Answer: {path[-1].value}')
     ...
 
 if __name__ == '__main__':
