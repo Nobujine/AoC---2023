@@ -1,4 +1,4 @@
-filename = 'Day 18/test_input.txt'
+filename = 'Day 18/input.txt'
 
 with open(filename, 'r') as f:
     instructions = f.read().splitlines()
@@ -23,7 +23,9 @@ def is_inside(pos:tuple, perimiter:set, x_min:int)->bool:
                 count += 1
     return bool(count % 2)
 
-def draw(y_min:int, y_max:int, x_min:int, x_max:int, perimiter:set=None, interior:set=None)->None:
+def draw(y_min:int, y_max:int, x_min:int, x_max:int, perimiter:set=set(), interior:set=set())->None:
+    y_max = min(30, y_max)
+    x_max = min(10, x_max)
     for y in range(y_min, y_max):
         line = ''
         for x in range(x_min,x_max):
@@ -46,8 +48,6 @@ x_min = 0
 y_max = 0
 y_min = 0
 
-
-
 # build perimiter
 for ins in instructions:
     for i in range(int(ins[1])):
@@ -58,6 +58,8 @@ for ins in instructions:
         y_max = max(y_max, pos[1])
         y_min = min(y_min, pos[1])
 
+#draw(y_min,y_max+1,x_min,x_max+1, perimiter)
+...
 
 count = len(perimiter)
 interior = set()
