@@ -48,6 +48,7 @@ x_min = 0
 y_max = 0
 y_min = 0
 
+points = []
 # build perimiter
 for ins in instructions:
     for i in range(int(ins[1])):
@@ -57,20 +58,26 @@ for ins in instructions:
         x_min = min(x_min, pos[0])
         y_max = max(y_max, pos[1])
         y_min = min(y_min, pos[1])
+    points.append(pos)   
 
-#draw(y_min,y_max+1,x_min,x_max+1, perimiter)
-...
+def area(points:list)->int:
+    #shoelace theorem
+    results = []
+    for i in range(-1, len(points)-1):
+        a = points[i]
+        b = points[i+1]
+        results.append(a[0]*b[1] - a[1]*b[0])
+        ...
+    output = sum(results)/2
+    return output
 
-count = len(perimiter)
-interior = set()
-for y in range(y_min, y_max):
-    for x in range(x_min, x_max):
-        pos = (x,y)
-        if is_inside(pos, perimiter, x_min):
-            count += 1
-            interior.add(pos)
+def picks(area:int, b:int)->int:
+    return area-(b/2)+1
 
-draw(y_min,y_max+1,x_min,x_max+1, perimiter, interior)
+#test = shoelace([(1,6),(3,1),(7,2), (4,4), (8,5)])
+a = area(points)
+interior_points = picks(a,len(perimiter))
+answer = interior_points + len(perimiter)
 
-print(f'Answer: {count}')
+print(f'Answer: {int(answer)}')
 ...
